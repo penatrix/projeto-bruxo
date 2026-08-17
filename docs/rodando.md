@@ -17,14 +17,40 @@ Duas portas importam:
 
 ## Passo 0 — Pré-requisitos
 
-Instale o Docker (Docker Desktop, OrbStack ou colima — qualquer um serve) e as
-ferramentas de linha de comando da Apple:
+São **duas** instalações separadas. O `xcode-select` traz `git` e `make`; ele não
+instala Docker, e o macOS não vem com Docker de fábrica.
+
+### 0a. Ferramentas de linha de comando da Apple
 
 ```bash
 xcode-select --install     # traz git e make
 ```
 
-Confira antes de seguir:
+Se responder "command line tools are already installed", está pronto.
+
+### 0b. Docker
+
+Descubra primeiro qual é o seu chip:
+
+```bash
+uname -m       # arm64 = Apple Silicon (M1/M2/M3/M4) · x86_64 = Intel
+```
+
+Escolha **uma** das opções:
+
+| Opção | Como | Observação |
+|---|---|---|
+| **Docker Desktop** | baixe o `.dmg` em [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/), escolhendo a build do seu chip, e arraste para Aplicativos | o padrão da indústria; sem precisar de Homebrew |
+| Docker Desktop via Homebrew | `brew install --cask docker-desktop` | o cask se chamava só `docker` antes de ser renomeado |
+| OrbStack | `brew install --cask orbstack` | alternativa mais leve no Mac (bem menos RAM); fala o mesmo protocolo, os comandos deste guia não mudam |
+
+Depois de instalar, **abra o aplicativo uma vez**: é isso que instala o comando `docker`
+e sobe o daemon. Sem o app rodando (ícone na barra de menu), qualquer comando `docker`
+falha com "command not found" ou "Cannot connect to the Docker daemon".
+
+### 0c. Conferir
+
+Abra um terminal novo (o PATH só muda em sessões novas) e rode:
 
 ```bash
 docker compose version     # precisa ser v2.x
@@ -32,7 +58,7 @@ make -v
 git --version
 ```
 
-O Docker precisa estar **rodando** (ícone na barra de menu), não só instalado.
+Só siga para o passo 1 quando os três responderem.
 
 ## Passo 1 — Clonar o repositório
 
