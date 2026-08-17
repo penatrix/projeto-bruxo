@@ -11,7 +11,10 @@ services:
     volumes:
       - db-data:/var/lib/mysql
     ports:
-      - "${DB_PORT}:3306"
+      # Só na loopback. O Docker escreve as próprias regras de iptables antes das
+      # do ufw, então uma porta publicada em 0.0.0.0 fica exposta na internet
+      # mesmo com o firewall "fechado" — pegadinha clássica ao subir num VPS.
+      - "127.0.0.1:${DB_PORT}:3306"
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 5s
@@ -26,6 +29,10 @@ services:
     container_name: otb-build
     profiles: ["tools"]
     working_dir: /srv
+    environment:
+      # Vazio = o build.sh decide sozinho a partir de CPU e memória disponíveis.
+      BUILD_JOBS: ${BUILD_JOBS:-}
+      UNITY_BUILD: ${UNITY_BUILD:-ON}
     volumes:
       - ./server:/srv
       - ccache:/root/.ccache
@@ -67,7 +74,9 @@ services:
     depends_on:
       - db
     ports:
-      - "8080:8080"
+      # Idem: painel do banco não vai para a internet. Acesse do próprio host,
+      # ou por túnel SSH: ssh -L 8080:127.0.0.1:8080 usuario@servidor
+      - "127.0.0.1:8080:8080"
     environment:
       ADMINER_DEFAULT_SERVER: db
     # A imagem escuta em [::]:8080 por padrão e morre em host sem IPv6.
