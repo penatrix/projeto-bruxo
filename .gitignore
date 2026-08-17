@@ -1,0 +1,8 @@
+# Segredos e configuração local
+.env
+
+# Artefatos de build do engine
+server/build/
+
+# Gerado pelo entrypoint no primeiro boot
+server/config.lua
