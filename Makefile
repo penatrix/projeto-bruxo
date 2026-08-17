@@ -18,12 +18,12 @@ help:
 
 init:
 	@test -f .env || (cp .env.example .env && echo ">> .env criado a partir do .env.example")
-	@if [ -d server/.git ]; then \
-		echo ">> ./server já existe, pulando clone."; \
+	@if [ -f server/CMakeLists.txt ]; then \
+		echo ">> ./server já tem o engine, pulando clone."; \
 	else \
 		echo ">> Clonando $(ENGINE_REPO) ($(ENGINE_REF))..."; \
-		git clone --depth 1 --branch $(ENGINE_REF) $(ENGINE_REPO) server; \
-		rm -rf server/.git; \
+		git clone --depth 1 --branch $(ENGINE_REF) $(ENGINE_REPO) server && \
+		rm -rf server/.git && \
 		echo ">> Engine em ./server. O .git foi removido: esse código agora é seu."; \
 	fi
 

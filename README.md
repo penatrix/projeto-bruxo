@@ -49,6 +49,9 @@ level 100). O `schema.sql` também traz uma conta `1` / `1` de fábrica.
 Cenário: **servidor no Mac, cliente no Windows**, os dois no mesmo Wi-Fi. É o arranjo
 natural porque não existe build pronta de cliente 8.60 para macOS, e existe para Windows.
 
+O passo a passo completo, do zero até entrar no jogo, está em
+[`docs/rodando.md`](docs/rodando.md). O resumo:
+
 ### 1. Descubra o IP do Mac na rede local
 
 ```bash
