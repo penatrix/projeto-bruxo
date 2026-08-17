@@ -92,14 +92,23 @@ Anote — por exemplo `192.168.0.42`. É o endereço que o Windows vai usar.
 cp .env.example .env
 ```
 
-Abra e ajuste:
+O `cp` não imprime nada quando dá certo — silêncio ali é sucesso. E o arquivo começa
+com ponto, então não aparece no Finder (Cmd+Shift+. mostra os ocultos). Confira com
+`cat .env`.
 
+Ajuste três valores: as duas senhas do banco e o IP. Ou faça pela linha de comando,
+trocando o IP pelo seu (no macOS o `sed -i` exige o `''` logo depois):
+
+```bash
+sed -i '' "s/^DB_ROOT_PASSWORD=.*/DB_ROOT_PASSWORD=$(openssl rand -hex 12)/" .env
+sed -i '' "s/^DB_PASSWORD=.*/DB_PASSWORD=$(openssl rand -hex 12)/" .env
+sed -i '' 's/^SERVER_IP=.*/SERVER_IP=192.168.0.42/' .env
+cat .env
 ```
-DB_ROOT_PASSWORD=algumaCoisaQueVoceEscolheu
-DB_PASSWORD=outraCoisaQueVoceEscolheu
-SERVER_NAME=Vallenmoor
-SERVER_IP=192.168.0.42          # ← o IP do passo 2, NÃO 127.0.0.1
-```
+
+> As senhas do banco só valem no **primeiro** `make up`: o MariaDB grava o usuário no
+> volume quando o cria. Trocar `DB_PASSWORD` depois exige `docker compose down -v`,
+> que apaga o banco junto. É agora o momento de defini-las.
 
 **Por que o `SERVER_IP` é o passo mais importante deste guia:** quando o cliente
 faz login, o servidor responde a lista de personagens carregando dentro dela o
