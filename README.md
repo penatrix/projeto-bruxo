@@ -50,7 +50,9 @@ Cenário: **servidor no Mac, cliente no Windows**, os dois no mesmo Wi-Fi. É o 
 natural porque não existe build pronta de cliente 8.60 para macOS, e existe para Windows.
 
 O passo a passo completo, do zero até entrar no jogo, está em
-[`docs/rodando.md`](docs/rodando.md). O resumo:
+[`docs/rodando.md`](docs/rodando.md) — e, para hospedar o servidor numa máquina
+Linux na internet em vez do seu computador, em [`docs/deploy-vps.md`](docs/deploy-vps.md).
+O resumo:
 
 ### 1. Descubra o IP do Mac na rede local
 
