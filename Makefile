@@ -1,7 +1,7 @@
 ENGINE_REPO ?= https://github.com/MillhioreBT/forgottenserver-downgrade.git
 ENGINE_REF  ?= main
 
-.PHONY: help init build up down restart logs shell db-shell seed clean
+.PHONY: help init build up down restart logs shell db-shell seed status clean
 
 help:
 	@echo "init      - clona o engine em ./server (rode uma vez)"
@@ -13,6 +13,7 @@ help:
 	@echo "shell     - bash dentro do container do servidor"
 	@echo "db-shell  - cliente mysql conectado no banco"
 	@echo "seed      - cria a conta de desenvolvimento (admin/admin + god 'Deus')"
+	@echo "status    - consulta o servidor e mostra o IP que ele anuncia aos clientes"
 	@echo "clean     - remove build artifacts (mantém o banco)"
 
 init:
@@ -52,6 +53,14 @@ seed:
 	docker compose exec -T db sh -c \
 	  'mariadb -u"$$MARIADB_USER" -p"$$MARIADB_PASSWORD" "$$MARIADB_DATABASE"' < docker/seed-dev.sql
 	@echo ">> Conta criada: admin / admin  (personagem: Deus)"
+
+# Protocolo de status do TFS: 0x06 0x00 0xFF 0xFF + "info". Não é criptografado,
+# então serve de teste de vida sem precisar de cliente. O atributo ip= da resposta
+# é exatamente o endereço que o login server manda o cliente usar pro mundo.
+status:
+	@docker compose exec -T server sh -c \
+	  'printf "\006\000\377\377info" | nc -w 2 127.0.0.1 7171'
+	@echo
 
 clean:
 	rm -rf server/build
