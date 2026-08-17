@@ -53,10 +53,14 @@ falha com "command not found" ou "Cannot connect to the Docker daemon".
 Abra um terminal novo (o PATH só muda em sessões novas) e rode:
 
 ```bash
-docker compose version     # precisa ser v2.x
+docker compose version
 make -v
 git --version
 ```
+
+O que importa no primeiro é ele **responder** — qualquer versão recente serve, e o
+número já passou de v2 faz tempo. O que não serve é o `docker-compose` antigo, com
+hífen: este projeto usa o subcomando `docker compose`, com espaço.
 
 Só siga para o passo 1 quando os três responderem.
 

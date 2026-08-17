@@ -10,7 +10,7 @@ reinicia o container, sem rebuild.
 
 ## Pré-requisitos
 
-- Docker + Docker Compose v2
+- Docker, com o subcomando `docker compose` (com espaço, não o `docker-compose` antigo)
 - `make`
 - Um cliente OTClient V8 configurado para `127.0.0.1:7171`, protocolo 8.60
 
